@@ -92,7 +92,7 @@ function parseInput(input: string): Input {
 
 function moveRover(
   startPosition: RoverPosition,
-  instructions: Array<'L' | 'F' | 'R'>
+  instructions: Instruction[]
 ): RoverPosition {
   let lastPosition = { ...startPosition }
   for (const instruction of instructions) {
