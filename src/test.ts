@@ -127,3 +127,15 @@ FF`
 0 3 N`
   expect(main(input)).toEqual(expected)
 })
+
+test('Lost rover leaves a scent', () => {
+  const input = `3 3
+1 1 E
+FFF
+1 1 E
+FFFLF`
+
+  const expected = `3 1 E LOST
+3 2 N`
+  expect(main(input)).toEqual(expected)
+})
