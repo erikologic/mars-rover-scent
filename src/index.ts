@@ -31,16 +31,48 @@ function validateBoardXandY(input: string): void {
   validateCoordinate(coordinate)
 }
 
-function validateInput(input: string): void {
+type Instruction = 'L' | 'F' | 'R'
+
+interface RoverPosition extends Coordinate {
+  orientation: 'N' | 'S' | 'E' | 'W'
+}
+
+interface Input {
+  board: Coordinate
+  startPosition: RoverPosition
+  instructions: Instruction[]
+}
+
+function parseInput(input: string): Input {
   if (input.length > 100) {
     throw new Error('Invalid input length')
   }
-  if (input.match(/^\d+ \d+\n\d+ \d+ (N|S|E|W)\n(L|F|R)+$/m) === null) {
+
+  const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) (N|S|E|W)\n(L|F|R)+$/
+  const [
+    match,
+    boardX,
+    boardY,
+    startX,
+    startY,
+    startOrientation,
+    instructions,
+  ] = inputPattern.exec(input) ?? []
+  if (!match) {
     throw new Error('Invalid input structure')
+  }
+  return {
+    board: { x: Number(boardX), y: Number(boardY) },
+    startPosition: {
+      x: Number(startX),
+      y: Number(startY),
+      orientation: startOrientation as RoverPosition['orientation'],
+    },
+    instructions: instructions.split('') as Instruction[],
   }
 }
 
 export function main(input: string): void {
-  validateInput(input)
+  const { board, startPosition, instructions } = parseInput(input)
   validateBoardXandY(input)
 }
