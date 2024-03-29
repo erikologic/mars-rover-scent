@@ -32,6 +32,9 @@ function validateBoardXandY(input: string): void {
 }
 
 export function main(input: string): void {
+  if (input.length > 100) {
+    throw new Error('Invalid input length')
+  }
   if (input.match(/^\d+ \d+\n\d+ \d+ [A-Z]\n[A-Z]+$/m) === null) {
     throw new Error('Invalid input structure')
   }
