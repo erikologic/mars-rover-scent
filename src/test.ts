@@ -22,8 +22,8 @@ describe('Board coordinates', () => {
     },
     {
       testName: 'Min Y coordinate value must be 0',
-      input: `5 -1\n1 1 E\nR`,
-      error: /Error.*board 2nd coordinate.*-1.*min value.*0/,
+      input: `5 -5\n1 1 E\nR`,
+      error: /Error.*board 2nd coordinate.*-5.*min value.*0/,
     },
     {
       testName: 'Max Y coordinate value must be 50',
