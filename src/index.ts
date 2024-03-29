@@ -1,5 +1,10 @@
 import { parseInput } from './parseInput'
-import { type RoverPosition, type Instruction, type Coordinate } from './type'
+import {
+  type RoverPosition,
+  type Instruction,
+  type Coordinate,
+  type Sequence,
+} from './type'
 
 type TurnLookup = Record<
   RoverPosition['orientation'],
@@ -39,20 +44,19 @@ const isOffBoard = (
   { x: maxX, y: maxY }: Coordinate
 ): boolean => x < 0 || y < 0 || x > maxX || y > maxY
 
-const moveRover = (
-  startPosition: RoverPosition,
-  topRightCoordinate: Coordinate,
-  instructions: Instruction[]
-): RoverPosition => {
-  let oldPos = { ...startPosition }
-  let newPos: RoverPosition
-  for (const instruction of instructions) {
-    newPos = instruction2command[instruction](oldPos)
-    if (isOffBoard(newPos, topRightCoordinate)) return { ...oldPos, lost: true }
-    oldPos = newPos
+const getMoveRover =
+  (topRightCoordinate: Coordinate) =>
+  ({ startPosition, instructions }: Sequence): RoverPosition => {
+    let oldPos = { ...startPosition }
+    let newPos: RoverPosition
+    for (const instruction of instructions) {
+      newPos = instruction2command[instruction](oldPos)
+      if (isOffBoard(newPos, topRightCoordinate))
+        return { ...oldPos, lost: true }
+      oldPos = newPos
+    }
+    return oldPos
   }
-  return oldPos
-}
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
   switch (orientation) {
@@ -77,11 +81,7 @@ function outputPosition({ x, y, orientation, lost }: RoverPosition): string {
 
 export function main(input: string): string {
   const { topRightBoardCoordinate, sequences } = parseInput(input)
-  const { startPosition, instructions } = sequences[0]
-  const lastPosition = moveRover(
-    startPosition,
-    topRightBoardCoordinate,
-    instructions
-  )
+  const moveRover = getMoveRover(topRightBoardCoordinate)
+  const lastPosition = moveRover(sequences[0])
   return outputPosition(lastPosition)
 }

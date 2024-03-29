@@ -14,7 +14,7 @@ export interface RoverPosition extends Coordinate {
   lost?: boolean
 }
 
-interface Sequence {
+export interface Sequence {
   startPosition: RoverPosition
   instructions: Instruction[]
 }
