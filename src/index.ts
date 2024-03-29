@@ -8,6 +8,11 @@ export function main(input: string): void {
     )
   }
 
+  if (x > 50)
+    throw new Error(
+      `Error while parsing the board 1st coordinate: value is ${x} but the max value can only be 50`
+    )
+
   if (y < 0) {
     throw new Error(
       'Error while parsing the board 2nd coordinate: value is -1 but the min value can only be 0'
@@ -18,8 +23,4 @@ export function main(input: string): void {
     throw new Error(
       `Error while parsing the board 2nd coordinate: value is ${y} but the max value can only be 50`
     )
-
-  throw new Error(
-    'Error while parsing the board 1st coordinate: value is 99 but the max value can only be 50'
-  )
 }
