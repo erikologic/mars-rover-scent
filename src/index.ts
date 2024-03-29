@@ -124,6 +124,11 @@ const instruction2command: Record<Instruction, InstructionCommand> = {
   R: turn(turnRightLookup),
 }
 
+const isOffBoard = (
+  { x, y }: RoverPosition,
+  { x: maxX, y: maxY }: Coordinate
+): boolean => x < 0 || y < 0 || x > maxX || y > maxY
+
 const moveRover = (
   startPosition: RoverPosition,
   topRightCoordinate: Coordinate,
@@ -133,12 +138,7 @@ const moveRover = (
   let newPos: RoverPosition
   for (const instruction of instructions) {
     newPos = instruction2command[instruction](oldPos)
-    if (newPos.x > topRightCoordinate.x || newPos.y > topRightCoordinate.y) {
-      return { ...oldPos, lost: true }
-    }
-    if (newPos.x < 0 || newPos.y < 0) {
-      return { ...oldPos, lost: true }
-    }
+    if (isOffBoard(newPos, topRightCoordinate)) return { ...oldPos, lost: true }
     oldPos = newPos
   }
   return oldPos
