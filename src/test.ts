@@ -36,3 +36,11 @@ describe('Board coordinates', () => {
     }).toThrow(error)
   })
 })
+
+describe('Input is of the correct format', () => {
+  test.each([''])('Invalid input: %s', (input) => {
+    expect(() => {
+      main(input)
+    }).toThrow('Invalid input format')
+  })
+})
