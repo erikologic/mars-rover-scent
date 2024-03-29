@@ -36,6 +36,7 @@ interface Input {
 }
 
 function parseInput(input: string): Input {
+  // TODO wrong
   if (input.length > 100) {
     throw new Error('Invalid input length')
   }

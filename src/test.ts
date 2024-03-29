@@ -1,5 +1,22 @@
 import { main } from '.'
 
+describe('Input is of the correct format', () => {
+  test.each(['', '5\n5', '5\n5\n1', '5 5\n1 1 Z\nR', '5 5\n1 1 E\nZ'])(
+    'Invalid input: %s',
+    (input) => {
+      expect(() => {
+        main(input)
+      }).toThrow('Invalid input structure')
+    }
+  )
+  test('Input is of the valid length', () => {
+    const input = '5 5\n1 1 E\n' + 'F'.repeat(999)
+    expect(() => {
+      main(input)
+    }).toThrow()
+  })
+})
+
 describe('Board coordinates', () => {
   test('Board coordinates must be a pair of valid numbers', () => {
     const input = `5 5\n1 1 E\nR`
@@ -24,22 +41,5 @@ describe('Board coordinates', () => {
     expect(() => {
       main(input)
     }).toThrow(error)
-  })
-})
-
-describe('Input is of the correct format', () => {
-  test.each(['', '5\n5', '5\n5\n1', '5 5\n1 1 Z\nR', '5 5\n1 1 E\nZ'])(
-    'Invalid input: %s',
-    (input) => {
-      expect(() => {
-        main(input)
-      }).toThrow('Invalid input structure')
-    }
-  )
-  test('Input is of the valid length', () => {
-    const input = '5 5\n1 1 E\n' + 'F'.repeat(999)
-    expect(() => {
-      main(input)
-    }).toThrow()
   })
 })
