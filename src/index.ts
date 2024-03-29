@@ -97,25 +97,14 @@ const instruction2command: Record<Instruction, InstructionCommand> = {
   R: turnRight,
 }
 
-function moveRover(
+const moveRover = (
   startPosition: RoverPosition,
   instructions: Instruction[]
-): RoverPosition {
-  let lastPosition = { ...startPosition }
-  for (const instruction of instructions) {
-    // if (instruction === 'F') {
-    //   lastPosition = moveForward(lastPosition)
-    // }
-    // if (instruction === 'L') {
-    //   lastPosition = turnLeft(lastPosition)
-    // }
-    // if (instruction === 'R') {
-    //   lastPosition = turnRight(lastPosition)
-    // }
-    lastPosition = instruction2command[instruction](lastPosition)
-  }
-  return lastPosition
-}
+): RoverPosition =>
+  instructions.reduce(
+    (position, instruction) => instruction2command[instruction](position),
+    startPosition
+  )
 
 function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
   switch (orientation) {
