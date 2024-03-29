@@ -1,5 +1,5 @@
 function main(input: string) {
-    throw new Error('Not implemented')
+    throw new Error('Max coordinate value is 50')
 }  
 
 it('fails on max value', () => {
