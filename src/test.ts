@@ -1,56 +1,61 @@
 import { main } from '.'
 
-describe('Wrong input format is properly flagged', () => {
-  test.each([
-    ['', 'Invalid input lines length'],
-    ['5\n5\n5\n5', 'Invalid input lines length'],
-    ['5\n5\n1', 'Top right board coordinate must be a pair of numbers'],
-    ['5 5\n1\nR', 'Invalid start position input stucture'],
-    ['5 5\n1 1 Z\nR', 'Orientation must be one of N, E, S, or W'],
-    ['5 5\n1 1 E\n666', 'Instructions must be a sequence of F, L, or R'],
-    ['5 5\n1 1 E\nABCDEG', 'Instructions must be a sequence of F, L, or R'],
-    ['5 5\n1 1 E\n' + 'F'.repeat(100), 'Cannot have more than 99 instructions'],
-  ])('Invalid input: %s -> %s', (input, error) => {
-    expect(() => {
-      main(input)
-    }).toThrow(error)
-  })
-})
-
-describe('Board coordinates', () => {
-  test('Board coordinates must be a pair of valid numbers', () => {
-    const input = `5 5\n1 1 E\nR`
-
-    expect(() => {
-      main(input)
-    }).not.toThrow()
+describe('Validate input', () => {
+  describe('Wrong input format is properly flagged', () => {
+    test.each([
+      ['', 'Invalid input lines length'],
+      ['5\n5\n5\n5', 'Invalid input lines length'],
+      ['5\n5\n1', 'Top right board coordinate must be a pair of numbers'],
+      ['5 5\n1\nR', 'Invalid start position input stucture'],
+      ['5 5\n1 1 Z\nR', 'Orientation must be one of N, E, S, or W'],
+      ['5 5\n1 1 E\n666', 'Instructions must be a sequence of F, L, or R'],
+      ['5 5\n1 1 E\nABCDEG', 'Instructions must be a sequence of F, L, or R'],
+      [
+        '5 5\n1 1 E\n' + 'F'.repeat(100),
+        'Cannot have more than 99 instructions',
+      ],
+    ])('Invalid input: %s -> %s', (input, error) => {
+      expect(() => {
+        main(input)
+      }).toThrow(error)
+    })
   })
 
-  test.each([
-    {
-      testName: 'Max X coordinate value must be 50',
-      input: `99 3\n1 1 E\nR`,
-      error: /X.*99.*max value.*50/,
-    },
-    {
-      testName: 'Max Y coordinate value must be 50',
-      input: `5 99\n1 1 E\nR`,
-      error: /Y.*99.*max value.*50/,
-    },
-  ])('$testName', ({ input, error }) => {
-    expect(() => {
-      main(input)
-    }).toThrow(error)
+  describe('Board coordinates', () => {
+    test('Board coordinates must be a pair of valid numbers', () => {
+      const input = `5 5\n1 1 E\nR`
+
+      expect(() => {
+        main(input)
+      }).not.toThrow()
+    })
+
+    test.each([
+      {
+        testName: 'Max X coordinate value must be 50',
+        input: `99 3\n1 1 E\nR`,
+        error: /X.*99.*max value.*50/,
+      },
+      {
+        testName: 'Max Y coordinate value must be 50',
+        input: `5 99\n1 1 E\nR`,
+        error: /Y.*99.*max value.*50/,
+      },
+    ])('$testName', ({ input, error }) => {
+      expect(() => {
+        main(input)
+      }).toThrow(error)
+    })
   })
-})
 
-describe('Start rover position', () => {
-  test('Rover can only start at a valid coordinate', () => {
-    const input = `5 5\n99 1 E\nR`
+  describe('Start rover position', () => {
+    test('Rover can only start at a valid coordinate', () => {
+      const input = `5 5\n99 1 E\nR`
 
-    expect(() => {
-      main(input)
-    }).toThrow(/X.*99.*max value.*50/)
+      expect(() => {
+        main(input)
+      }).toThrow(/X.*99.*max value.*50/)
+    })
   })
 })
 
@@ -72,7 +77,7 @@ describe('Rover moves', () => {
       from: '1 1 W',
       to: '0 1 W',
     },
-  ])('move forward once: $from -> $to', ({ from, to }) => {
+  ])('Move forward once: $from -> $to', ({ from, to }) => {
     const input = `5 5\n${from}\nF`
     expect(main(input)).toEqual(to)
   })
@@ -111,30 +116,30 @@ describe('Rover moves', () => {
     const input = `3 3\n${from}\nF`
     expect(main(input)).toEqual(to)
   })
-})
 
-test('2 rovers can be moved with one transmission', () => {
-  const input = `5 3
+  test('2 rovers can be moved with one transmission', () => {
+    const input = `5 3
 1 1 E
 FF
 0 1 N
 FF`
 
-  const expected = `3 1 E
+    const expected = `3 1 E
 0 3 N`
-  expect(main(input)).toEqual(expected)
-})
+    expect(main(input)).toEqual(expected)
+  })
 
-test('Lost rover leaves a scent', () => {
-  const input = `3 3
+  test('Lost rover leaves a scent', () => {
+    const input = `3 3
 1 1 E
 FFF
 1 1 E
 FFFLF`
 
-  const expected = `3 1 E LOST
+    const expected = `3 1 E LOST
 3 2 N`
-  expect(main(input)).toEqual(expected)
+    expect(main(input)).toEqual(expected)
+  })
 })
 
 test('README example', () => {
