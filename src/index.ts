@@ -68,4 +68,5 @@ function parseInput(input: string): Input {
 export function main(input: string): void {
   const { board, startPosition, instructions } = parseInput(input)
   validateCoordinate(board)
+  validateCoordinate(startPosition)
 }

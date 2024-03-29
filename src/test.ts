@@ -43,3 +43,13 @@ describe('Board coordinates', () => {
     }).toThrow(error)
   })
 })
+
+describe('Start rover position', () => {
+  test('Rover can only start at a valid coordinate', () => {
+    const input = `5 5\n99 1 E\nR`
+
+    expect(() => {
+      main(input)
+    }).toThrow()
+  })
+})
