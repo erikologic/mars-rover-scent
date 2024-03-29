@@ -33,10 +33,11 @@ const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
 
 interface RoverPosition extends Coordinate {
   orientation: (typeof validOrientations)[number]
+  lost?: boolean
 }
 
 interface Input {
-  board: Coordinate
+  topRightBoardCoordinate: Coordinate
   startPosition: RoverPosition
   instructions: Instruction[]
 }
@@ -80,7 +81,7 @@ function parseInput(input: string): Input {
   const listInstructions = instructions.split('')
   validateInstructions(listInstructions)
   return {
-    board: { x: Number(boardX), y: Number(boardY) },
+    topRightBoardCoordinate: { x: Number(boardX), y: Number(boardY) },
     startPosition: {
       x: Number(startX),
       y: Number(startY),
@@ -125,12 +126,20 @@ const instruction2command: Record<Instruction, InstructionCommand> = {
 
 const moveRover = (
   startPosition: RoverPosition,
+  topRightCoordinate: Coordinate,
   instructions: Instruction[]
-): RoverPosition =>
-  instructions.reduce(
-    (position, instruction) => instruction2command[instruction](position),
-    startPosition
-  )
+): RoverPosition => {
+  let oldPos = { ...startPosition }
+  let newPos: RoverPosition
+  for (const instruction of instructions) {
+    newPos = instruction2command[instruction](oldPos)
+    if (newPos.x > topRightCoordinate.x || newPos.y > topRightCoordinate.y) {
+      return { ...oldPos, lost: true }
+    }
+    oldPos = newPos
+  }
+  return oldPos
+}
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
   switch (orientation) {
@@ -145,14 +154,23 @@ function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
   }
 }
 
-function stringifyPosition({ x, y, orientation }: RoverPosition): string {
-  return `${x} ${y} ${orientation}`
+function stringifyPosition({ x, y, orientation, lost }: RoverPosition): string {
+  let s = `${x} ${y} ${orientation}`
+  if (lost) {
+    s += ' LOST'
+  }
+  return s
 }
 
 export function main(input: string): string {
-  const { board, startPosition, instructions } = parseInput(input)
-  validateCoordinate(board)
+  const { topRightBoardCoordinate, startPosition, instructions } =
+    parseInput(input)
+  validateCoordinate(topRightBoardCoordinate)
   validateCoordinate(startPosition)
-  const lastPosition = moveRover(startPosition, instructions)
+  const lastPosition = moveRover(
+    startPosition,
+    topRightBoardCoordinate,
+    instructions
+  )
   return stringifyPosition(lastPosition)
 }
