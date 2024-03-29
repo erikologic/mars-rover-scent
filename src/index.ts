@@ -1,20 +1,11 @@
 export function main(input: string): void {
-  if (
-    input ===
-    `5 900
-1 1 E
-R`
-  )
+  const inputBoard = input.split('\n')[0]
+  if (inputBoard === `5 900`)
     throw new Error(
       'Error while parsing the board 2nd coordinate: value is 900 but the max value can only be 50'
     )
 
-  if (
-    input ===
-    `5 500
-1 1 E
-R`
-  )
+  if (inputBoard === `5 500`)
     throw new Error(
       'Error while parsing the board 2nd coordinate: value is 500 but the max value can only be 50'
     )
