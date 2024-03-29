@@ -107,10 +107,16 @@ function moveRover(
 }
 
 function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
-  if (orientation === 'N') {
-    return { x, y, orientation: 'W' }
+  switch (orientation) {
+    case 'E':
+      return { x, y, orientation: 'N' }
+    case 'N':
+      return { x, y, orientation: 'W' }
+    case 'S':
+      return { x, y, orientation: 'E' }
+    case 'W':
+      return { x, y, orientation: 'S' }
   }
-  throw new Error('Not implemented')
 }
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
