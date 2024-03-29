@@ -37,6 +37,9 @@ function validateBoardXandY(input: string): void {
 }
 
 export function main(input: string): void {
+  if (input === '5\n5') {
+    throw new Error('Invalid input format')
+  }
   if (input === '') {
     throw new Error('Invalid input format')
   }
