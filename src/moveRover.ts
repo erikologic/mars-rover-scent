@@ -59,21 +59,24 @@ const isOffBoard = (
 export const getMoveRover = (
   topRightCoordinate: Coordinate
 ): ((s: Sequence) => RoverPosition) => {
-  const lostRovers = new Set<string>()
+  const lostRoversPosAndInstructions = new Set<string>()
 
   return ({ startPosition, instructions }: Sequence): RoverPosition => {
     let oldPos = { ...startPosition }
     let newPos: RoverPosition
     for (const instruction of instructions) {
       newPos = instruction2command[instruction](oldPos)
-      const hashedPosition = JSON.stringify({ ...oldPos, instruction })
+      const hashedPosAndInstructions = JSON.stringify({
+        ...oldPos,
+        instruction,
+      })
 
-      if (lostRovers.has(hashedPosition)) {
+      if (lostRoversPosAndInstructions.has(hashedPosAndInstructions)) {
         continue
       }
 
       if (isOffBoard(newPos, topRightCoordinate)) {
-        lostRovers.add(hashedPosition)
+        lostRoversPosAndInstructions.add(hashedPosAndInstructions)
         return { ...oldPos, lost: true }
       }
       oldPos = newPos
