@@ -90,21 +90,29 @@ function parseInput(input: string): Input {
   }
 }
 
+type InstructionCommand = (position: RoverPosition) => RoverPosition
+const instruction2command: Record<Instruction, InstructionCommand> = {
+  F: moveForward,
+  L: turnLeft,
+  R: turnRight,
+}
+
 function moveRover(
   startPosition: RoverPosition,
   instructions: Instruction[]
 ): RoverPosition {
   let lastPosition = { ...startPosition }
   for (const instruction of instructions) {
-    if (instruction === 'F') {
-      lastPosition = moveForward(lastPosition)
-    }
-    if (instruction === 'L') {
-      lastPosition = turnLeft(lastPosition)
-    }
-    if (instruction === 'R') {
-      lastPosition = turnRight(lastPosition)
-    }
+    // if (instruction === 'F') {
+    //   lastPosition = moveForward(lastPosition)
+    // }
+    // if (instruction === 'L') {
+    //   lastPosition = turnLeft(lastPosition)
+    // }
+    // if (instruction === 'R') {
+    //   lastPosition = turnRight(lastPosition)
+    // }
+    lastPosition = instruction2command[instruction](lastPosition)
   }
   return lastPosition
 }
