@@ -13,5 +13,5 @@ it('fails on max coordinate value for the 2nd board coordinate', () => {
 1 1 E
 R`
 
-    expect(() => main(input)).toThrow('Error while parsing the board 2nd coordinate: max coordinate value is 50')
+    expect(() => main(input)).toThrow('Error while parsing the board 2nd coordinate: value is 500 but the max value can only be 50')
 })
