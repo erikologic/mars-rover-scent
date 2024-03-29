@@ -59,4 +59,9 @@ describe('Rover moves', () => {
     const input = `5 5\n1 1 E\nF`
     expect(main(input)).toEqual('2 1 E')
   })
+
+  test('move forward north', () => {
+    const input = `5 5\n1 1 N\nF`
+    expect(main(input)).toEqual('1 2 N')
+  })
 })

@@ -100,6 +100,10 @@ export function main(input: string): string {
       if (startPosition.orientation === 'E') {
         startPosition.x += 1
       }
+
+      if (startPosition.orientation === 'N') {
+        startPosition.y += 1
+      }
     }
   }
 
