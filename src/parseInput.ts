@@ -5,6 +5,7 @@ import {
   type Input,
   validOrientations,
   validInstructions,
+  type Sequence,
 } from './type'
 
 function validateCoordinateNumber(
@@ -83,6 +84,17 @@ function createInstructionsNew(input: string): Instruction[] {
   return listInstructions
 }
 
+function createSequences(sequencesInputs: string[]): Sequence[] {
+  const sequences = []
+  for (let i = 0; i < sequencesInputs.length; i += 2) {
+    sequences.push({
+      startPosition: createStartPositionNew(sequencesInputs[i]),
+      instructions: createInstructionsNew(sequencesInputs[i + 1]),
+    })
+  }
+  return sequences
+}
+
 export function parseInput(input: string): Input {
   const inputs = input.split('\n')
   const length = inputs.length
@@ -90,13 +102,10 @@ export function parseInput(input: string): Input {
     throw new Error('Invalid input structure')
   }
 
+  const [boardInput, ...sequencesInputs] = inputs
+
   return {
-    topRightBoardCoordinate: createTopRightBoardCoordinate(inputs[0]),
-    sequences: [
-      {
-        startPosition: createStartPositionNew(inputs[1]),
-        instructions: createInstructionsNew(inputs[2]),
-      },
-    ],
+    topRightBoardCoordinate: createTopRightBoardCoordinate(boardInput),
+    sequences: createSequences(sequencesInputs),
   }
 }

@@ -82,6 +82,5 @@ function outputPosition({ x, y, orientation, lost }: RoverPosition): string {
 export function main(input: string): string {
   const { topRightBoardCoordinate, sequences } = parseInput(input)
   const moveRover = getMoveRover(topRightBoardCoordinate)
-  const lastPosition = moveRover(sequences[0])
-  return outputPosition(lastPosition)
+  return sequences.map(moveRover).map(outputPosition).join('\n')
 }

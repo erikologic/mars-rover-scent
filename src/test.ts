@@ -120,10 +120,10 @@ test('2 rovers can be moved with one transmission', () => {
   const input = `5 3
 1 1 E
 FF
-0 3 W
+0 1 N
 FF`
 
-  const expected = `1 3 E
-0 1 N`
+  const expected = `3 1 E
+0 3 N`
   expect(main(input)).toEqual(expected)
 })
