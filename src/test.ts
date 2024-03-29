@@ -1,6 +1,16 @@
 import { main } from '.'
 
 describe('Board coordinates', () => {
+  test('Min X coordinate value must be 0', () => {
+    const input = `-1 3\n1 1 E\nR`
+
+    expect(() => {
+      main(input)
+    }).toThrow(
+      'Error while parsing the board 1st coordinate: value is -1 but the min value can only be 0'
+    )
+  })
+
   test('Max X coordinate value must be 50', () => {
     const input = `99 3
 1 1 E
