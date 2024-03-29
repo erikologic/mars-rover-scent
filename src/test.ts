@@ -27,8 +27,8 @@ describe('Board coordinates', () => {
     },
     {
       testName: 'Max Y coordinate value must be 50',
-      input: `5 500\n1 1 E\nR`,
-      error: /Error.*board Y coordinate.*500.*max value.*50/,
+      input: `5 99\n1 1 E\nR`,
+      error: /Error.*board Y coordinate.*99.*max value.*50/,
     },
   ])('$testName', ({ input, error }) => {
     expect(() => {
@@ -41,6 +41,6 @@ describe('Input is of the correct format', () => {
   test.each(['', '5\n5'])('Invalid input: %s', (input) => {
     expect(() => {
       main(input)
-    }).toThrow('Invalid input format')
+    }).toThrow('Invalid input structure')
   })
 })
