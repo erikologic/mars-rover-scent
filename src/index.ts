@@ -23,10 +23,16 @@ function validateCoordinate(coordinate: Coordinate): void {
   validateCoordinateNumber('y', coordinate)
 }
 
-type Instruction = 'L' | 'F' | 'R'
+const validInstructions = ['L', 'F', 'R'] as const
+const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
+
+type Instruction = (typeof validInstructions)[number]
+
+const validOrientations = ['N', 'S', 'E', 'W'] as const
+const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
 
 interface RoverPosition extends Coordinate {
-  orientation: 'N' | 'S' | 'E' | 'W'
+  orientation: (typeof validOrientations)[number]
 }
 
 interface Input {
@@ -35,13 +41,29 @@ interface Input {
   instructions: Instruction[]
 }
 
+function validateRoverOrientation(
+  orientation: string
+): asserts orientation is RoverPosition['orientation'] {
+  if (!orientationRegex.test(orientation)) {
+    throw new Error('Invalid input structure')
+  }
+}
+
+function validateInstructions(
+  instructions: string[]
+): asserts instructions is Instruction[] {
+  if (!instructionRegex.test(instructions.join(''))) {
+    throw new Error('Invalid input structure')
+  }
+}
+
 function parseInput(input: string): Input {
   // TODO wrong
   if (input.length > 100) {
     throw new Error('Invalid input length')
   }
 
-  const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) (N|S|E|W)\n(L|F|R)+$/
+  const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) ([A-Z])\n([A-Z])+$/
   const [
     match,
     boardX,
@@ -54,14 +76,17 @@ function parseInput(input: string): Input {
   if (!match) {
     throw new Error('Invalid input structure')
   }
+  validateRoverOrientation(startOrientation)
+  const listInstructions = instructions.split('')
+  validateInstructions(listInstructions)
   return {
     board: { x: Number(boardX), y: Number(boardY) },
     startPosition: {
       x: Number(startX),
       y: Number(startY),
-      orientation: startOrientation as RoverPosition['orientation'],
+      orientation: startOrientation,
     },
-    instructions: instructions.split('') as Instruction[],
+    instructions: listInstructions,
   }
 }
 
