@@ -23,6 +23,16 @@ R`
     )
   })
 
+  test('Min Y coordinate value must be 0', () => {
+    const input = `5 -1\n1 1 E\nR`
+
+    expect(() => {
+      main(input)
+    }).toThrow(
+      'Error while parsing the board 2nd coordinate: value is -1 but the min value can only be 0'
+    )
+  })
+
   test('Max Y coordinate value must be 50', () => {
     const input = `5 500\n1 1 E\nR`
 
