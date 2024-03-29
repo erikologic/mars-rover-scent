@@ -1,6 +1,4 @@
-function main(input: string) {
-    throw new Error('Max coordinate value is 50')
-}  
+import { main } from "."
 
 it('fails on max value', () => {
     const input = `500 3
