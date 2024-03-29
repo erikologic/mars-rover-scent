@@ -27,6 +27,25 @@ function validateCoordinate(coordinate: Coordinate): void {
   validateCoordinateNumber('y', coordinate)
 }
 
+const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
+function validateInstructions(
+  instructions: string[]
+): asserts instructions is Instruction[] {
+  if (!instructionRegex.test(instructions.join(''))) {
+    throw new Error('Invalid input structure')
+  }
+}
+
+function createInstructions(instructions: string): Instruction[] {
+  if (instructions.length > 100) {
+    throw new Error('Invalid input structure')
+  }
+
+  const listInstructions = instructions.split('')
+  validateInstructions(listInstructions)
+  return listInstructions
+}
+
 const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
 function validateRoverOrientation(
   orientation: string
@@ -36,13 +55,31 @@ function validateRoverOrientation(
   }
 }
 
-const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
-function validateInstructions(
-  instructions: string[]
-): asserts instructions is Instruction[] {
-  if (!instructionRegex.test(instructions.join(''))) {
-    throw new Error('Invalid input structure')
+function createStartPosition(
+  startX: string,
+  startY: string,
+  startOrientation: string
+): RoverPosition {
+  validateRoverOrientation(startOrientation)
+  const startPosition = {
+    x: Number(startX),
+    y: Number(startY),
+    orientation: startOrientation,
   }
+  validateCoordinate(startPosition)
+  return startPosition
+}
+
+function createTopRightBoardCoordinate(
+  boardX: string,
+  boardY: string
+): Coordinate {
+  const topRightBoardCoordinate = {
+    x: Number(boardX),
+    y: Number(boardY),
+  }
+  validateCoordinate(topRightBoardCoordinate)
+  return topRightBoardCoordinate
 }
 
 export function parseInput(input: string): Input {
@@ -56,30 +93,12 @@ export function parseInput(input: string): Input {
     startOrientation,
     instructions,
   ] = inputPattern.exec(input) ?? []
-  if (!match || instructions.length > 100) {
-    throw new Error('Invalid input structure')
-  }
 
-  validateRoverOrientation(startOrientation)
+  if (!match) throw new Error('Invalid input structure')
 
-  const listInstructions = instructions.split('')
-  validateInstructions(listInstructions)
-
-  const topRightBoardCoordinate = {
-    x: Number(boardX),
-    y: Number(boardY),
-  }
-  validateCoordinate(topRightBoardCoordinate)
-
-  const startPosition = {
-    x: Number(startX),
-    y: Number(startY),
-    orientation: startOrientation,
-  }
-  validateCoordinate(startPosition)
   return {
-    topRightBoardCoordinate,
-    startPosition,
-    instructions: listInstructions,
+    topRightBoardCoordinate: createTopRightBoardCoordinate(boardX, boardY),
+    startPosition: createStartPosition(startX, startY, startOrientation),
+    instructions: createInstructions(instructions),
   }
 }
