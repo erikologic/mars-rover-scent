@@ -99,6 +99,11 @@ function moveRover(
     if (instruction === 'F') {
       lastPosition = moveForward(lastPosition)
     }
+    if (instruction === 'L') {
+      if (lastPosition.orientation === 'N') {
+        lastPosition.orientation = 'W'
+      }
+    }
   }
   return lastPosition
 }
