@@ -115,3 +115,15 @@ describe('Rover moves', () => {
     expect(main(input)).toEqual(to)
   })
 })
+
+// test('2 rovers can be moved with one transmission', () => {
+//   const input = `5 3
+// 1 1 E
+// FF
+// 0 3 W
+// FF`
+
+//   const expected = `1 3 E
+// 0 1 N`
+//   expect(main(input)).toEqual(expected)
+// })

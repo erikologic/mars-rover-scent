@@ -70,10 +70,10 @@ function createStartPosition(
   return startPosition
 }
 
-function createTopRightBoardCoordinate(
-  boardX: string,
-  boardY: string
-): Coordinate {
+function createTopRightBoardCoordinate(input: string): Coordinate {
+  const inputPattern = /^(\d+) (\d+)$/
+  const [match, boardX, boardY] = inputPattern.exec(input) ?? []
+  if (!match) throw new Error('Invalid input structure')
   const topRightBoardCoordinate = {
     x: Number(boardX),
     y: Number(boardY),
@@ -81,8 +81,12 @@ function createTopRightBoardCoordinate(
   validateCoordinate(topRightBoardCoordinate)
   return topRightBoardCoordinate
 }
-
 export function parseInput(input: string): Input {
+  const inputs = input.split('\n')
+  const length = inputs.length
+  if (length < 3 || (length - 1) % 2 !== 0) {
+    throw new Error('Invalid input structure')
+  }
   const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) ([A-Z])\n([A-Z]+)$/
   const [
     match,
@@ -97,7 +101,7 @@ export function parseInput(input: string): Input {
   if (!match) throw new Error('Invalid input structure')
 
   return {
-    topRightBoardCoordinate: createTopRightBoardCoordinate(boardX, boardY),
+    topRightBoardCoordinate: createTopRightBoardCoordinate(inputs[0]),
     startPosition: createStartPosition(startX, startY, startOrientation),
     instructions: createInstructions(instructions),
   }
