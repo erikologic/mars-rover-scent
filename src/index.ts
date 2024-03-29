@@ -23,14 +23,6 @@ function validateCoordinate(coordinate: Coordinate): void {
   validateCoordinateNumber('y', coordinate)
 }
 
-function validateBoardXandY(input: string): void {
-  const inputBoard = input.split('\n')[0]
-  const [x, y] = inputBoard.split(' ').map(Number)
-  const coordinate = { x, y }
-
-  validateCoordinate(coordinate)
-}
-
 type Instruction = 'L' | 'F' | 'R'
 
 interface RoverPosition extends Coordinate {
@@ -74,5 +66,5 @@ function parseInput(input: string): Input {
 
 export function main(input: string): void {
   const { board, startPosition, instructions } = parseInput(input)
-  validateBoardXandY(input)
+  validateCoordinate(board)
 }
