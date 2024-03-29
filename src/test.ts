@@ -102,13 +102,13 @@ describe('Rover moves', () => {
     expect(main(input)).toEqual(`1 1 ${to}`)
   })
 
-  test('Rover can fall off the board', () => {
-    const input = `5 3\n3 2 N\nFRRFLLFFRRFLL`
-    expect(main(input)).toEqual('3 3 N LOST')
-  })
-
-  test('Rover can fall off the board to the left', () => {
-    const input = `5 5\n0 0 W\nF`
-    expect(main(input)).toEqual('0 0 W LOST')
+  test.each([
+    ['3 3 N', '3 3 N LOST'],
+    ['3 3 E', '3 3 E LOST'],
+    ['0 0 S', '0 0 S LOST'],
+    ['0 0 W', '0 0 W LOST'],
+  ])('Rover falls off the board when moving forward: %s -> %s', (from, to) => {
+    const input = `3 3\n${from}\nF`
+    expect(main(input)).toEqual(to)
   })
 })
