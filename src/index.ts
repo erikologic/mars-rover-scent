@@ -102,6 +102,9 @@ function moveRover(
     if (instruction === 'L') {
       lastPosition = turnLeft(lastPosition)
     }
+    if (instruction === 'R') {
+      lastPosition = turnRight(lastPosition)
+    }
   }
   return lastPosition
 }
@@ -116,6 +119,19 @@ function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
       return { x, y, orientation: 'E' }
     case 'W':
       return { x, y, orientation: 'S' }
+  }
+}
+
+function turnRight({ x, y, orientation }: RoverPosition): RoverPosition {
+  switch (orientation) {
+    case 'E':
+      return { x, y, orientation: 'S' }
+    case 'N':
+      return { x, y, orientation: 'E' }
+    case 'S':
+      return { x, y, orientation: 'W' }
+    case 'W':
+      return { x, y, orientation: 'N' }
   }
 }
 

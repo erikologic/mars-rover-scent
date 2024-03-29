@@ -91,4 +91,14 @@ describe('Rover moves', () => {
     const input = `5 5\n1 1 ${from}\nL`
     expect(main(input)).toEqual(`1 1 ${to}`)
   })
+
+  test.each([
+    ['N', 'E'],
+    ['E', 'S'],
+    ['S', 'W'],
+    ['W', 'N'],
+  ])('Rover can turn right: %s -> %s', (from, to) => {
+    const input = `5 5\n1 1 ${from}\nR`
+    expect(main(input)).toEqual(`1 1 ${to}`)
+  })
 })
