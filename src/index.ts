@@ -90,33 +90,45 @@ function parseInput(input: string): Input {
   }
 }
 
+function moveRover(
+  startPosition: RoverPosition,
+  instructions: Array<'L' | 'F' | 'R'>
+): RoverPosition {
+  const lastPosition = { ...startPosition }
+  for (const instruction of instructions) {
+    if (instruction === 'F') {
+      moveForward(lastPosition)
+    }
+  }
+  return lastPosition
+}
+
+function moveForward(lastPosition: RoverPosition) {
+  if (lastPosition.orientation === 'E') {
+    lastPosition.x += 1
+  }
+
+  if (lastPosition.orientation === 'N') {
+    lastPosition.y += 1
+  }
+
+  if (lastPosition.orientation === 'S') {
+    lastPosition.y -= 1
+  }
+
+  if (lastPosition.orientation === 'W') {
+    lastPosition.x -= 1
+  }
+}
+
+function stringifyPosition({ x, y, orientation }: RoverPosition): string {
+  return `${x} ${y} ${orientation}`
+}
+
 export function main(input: string): string {
   const { board, startPosition, instructions } = parseInput(input)
   validateCoordinate(board)
   validateCoordinate(startPosition)
-
-  for (const instruction of instructions) {
-    if (instruction === 'F') {
-      if (startPosition.orientation === 'E') {
-        startPosition.x += 1
-      }
-
-      if (startPosition.orientation === 'N') {
-        startPosition.y += 1
-      }
-
-      if (startPosition.orientation === 'S') {
-        startPosition.y -= 1
-      }
-
-      if (startPosition.orientation === 'W') {
-        startPosition.x -= 1
-      }
-    }
-  }
-
-  return stringifyPosition(startPosition)
-}
-function stringifyPosition({ x, y, orientation }: RoverPosition): string {
-  return `${x} ${y} ${orientation}`
+  const lastPosition = moveRover(startPosition, instructions)
+  return stringifyPosition(lastPosition)
 }
