@@ -106,30 +106,31 @@ const moveRover = (
     startPosition
   )
 
-function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
-  switch (orientation) {
-    case 'E':
-      return { x, y, orientation: 'N' }
-    case 'N':
-      return { x, y, orientation: 'W' }
-    case 'S':
-      return { x, y, orientation: 'E' }
-    case 'W':
-      return { x, y, orientation: 'S' }
-  }
+const turnLeftLookup: Record<
+  RoverPosition['orientation'],
+  RoverPosition['orientation']
+> = {
+  E: 'N',
+  N: 'W',
+  S: 'E',
+  W: 'S',
 }
 
+function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
+  return { x, y, orientation: turnLeftLookup[orientation] }
+}
+
+const turnRightLookup: Record<
+  RoverPosition['orientation'],
+  RoverPosition['orientation']
+> = {
+  E: 'S',
+  N: 'E',
+  S: 'W',
+  W: 'N',
+}
 function turnRight({ x, y, orientation }: RoverPosition): RoverPosition {
-  switch (orientation) {
-    case 'E':
-      return { x, y, orientation: 'S' }
-    case 'N':
-      return { x, y, orientation: 'E' }
-    case 'S':
-      return { x, y, orientation: 'W' }
-    case 'W':
-      return { x, y, orientation: 'N' }
-  }
+  return { x, y, orientation: turnRightLookup[orientation] }
 }
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
