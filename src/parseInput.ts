@@ -92,7 +92,11 @@ export function parseInput(input: string): Input {
 
   return {
     topRightBoardCoordinate: createTopRightBoardCoordinate(inputs[0]),
-    startPosition: createStartPositionNew(inputs[1]),
-    instructions: createInstructionsNew(inputs[2]),
+    sequences: [
+      {
+        startPosition: createStartPositionNew(inputs[1]),
+        instructions: createInstructionsNew(inputs[2]),
+      },
+    ],
   }
 }
