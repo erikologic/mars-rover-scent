@@ -31,12 +31,16 @@ function validateBoardXandY(input: string): void {
   validateCoordinate(coordinate)
 }
 
-export function main(input: string): void {
+function validateInput(input: string): void {
   if (input.length > 100) {
     throw new Error('Invalid input length')
   }
-  if (input.match(/^\d+ \d+\n\d+ \d+ [A-Z]\n[A-Z]+$/m) === null) {
+  if (input.match(/^\d+ \d+\n\d+ \d+ (N|S|E|W)\n(L|F|R)+$/m) === null) {
     throw new Error('Invalid input structure')
   }
+}
+
+export function main(input: string): void {
+  validateInput(input)
   validateBoardXandY(input)
 }
