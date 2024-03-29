@@ -1,3 +1,4 @@
+import { outputPositions } from './outputPositions'
 import { parseInput } from './parseInput'
 import {
   type RoverPosition,
@@ -69,18 +70,6 @@ function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
     case 'W':
       return { x: x - 1, y, orientation }
   }
-}
-
-function outputPosition({ x, y, orientation, lost }: RoverPosition): string {
-  let s = `${x} ${y} ${orientation}`
-  if (lost) {
-    s += ' LOST'
-  }
-  return s
-}
-
-function outputPositions(positions: RoverPosition[]): string {
-  return positions.map(outputPosition).join('\n')
 }
 
 export function main(input: string): string {
