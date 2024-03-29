@@ -100,12 +100,17 @@ function moveRover(
       lastPosition = moveForward(lastPosition)
     }
     if (instruction === 'L') {
-      if (lastPosition.orientation === 'N') {
-        lastPosition.orientation = 'W'
-      }
+      lastPosition = turnLeft(lastPosition)
     }
   }
   return lastPosition
+}
+
+function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
+  if (orientation === 'N') {
+    return { x, y, orientation: 'W' }
+  }
+  throw new Error('Not implemented')
 }
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
