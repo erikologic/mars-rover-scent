@@ -18,7 +18,7 @@ function validateCoordinateNumber(
   const limitBroken = value > threshold
   if (limitBroken) {
     throw new Error(
-      `Error while parsing the board ${axis} coordinate: value is ${value} but the max value can only be ${threshold}`
+      `${axis} coordinate is ${value} but the max value is ${threshold}`
     )
   }
 }
@@ -28,28 +28,11 @@ function validateCoordinate(coordinate: Coordinate): void {
   validateCoordinateNumber('y', coordinate)
 }
 
-const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
-function validateInstructions(
-  instructions: string[]
-): asserts instructions is Instruction[] {
-  if (!instructionRegex.test(instructions.join(''))) {
-    throw new Error('Invalid input structure')
-  }
-}
-
-const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
-function validateRoverOrientation(
-  orientation: string
-): asserts orientation is RoverPosition['orientation'] {
-  if (!orientationRegex.test(orientation)) {
-    throw new Error('Invalid input structure')
-  }
-}
-
 function createTopRightBoardCoordinate(input: string): Coordinate {
   const inputPattern = /^(\d+) (\d+)$/
   const [match, boardX, boardY] = inputPattern.exec(input) ?? []
-  if (!match) throw new Error('Invalid input structure')
+  if (!match)
+    throw new Error('Top right board coordinate must be a pair of numbers')
   const topRightBoardCoordinate = {
     x: Number(boardX),
     y: Number(boardY),
@@ -58,11 +41,20 @@ function createTopRightBoardCoordinate(input: string): Coordinate {
   return topRightBoardCoordinate
 }
 
-function createStartPositionNew(input: string): RoverPosition {
+const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
+function validateRoverOrientation(
+  orientation: string
+): asserts orientation is RoverPosition['orientation'] {
+  if (!orientationRegex.test(orientation)) {
+    throw new Error('Orientation must be one of N, E, S, or W')
+  }
+}
+
+function createStartPosition(input: string): RoverPosition {
   const inputPattern = /^(\d+) (\d+) ([A-Z])$/
   const [match, startX, startY, startOrientation] =
     inputPattern.exec(input) ?? []
-  if (!match) throw new Error('Invalid input structure')
+  if (!match) throw new Error('Invalid start position input stucture')
   validateRoverOrientation(startOrientation)
   const startPosition = {
     x: Number(startX),
@@ -73,12 +65,22 @@ function createStartPositionNew(input: string): RoverPosition {
   return startPosition
 }
 
+const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
+function validateInstructions(
+  instructions: string[]
+): asserts instructions is Instruction[] {
+  if (!instructionRegex.test(instructions.join(''))) {
+    throw new Error('Instructions must be a sequence of F, L, or R')
+  }
+}
+
 function createInstructionsNew(input: string): Instruction[] {
-  if (input.length > 100) throw new Error('Invalid input structure')
+  if (input.length > 99)
+    throw new Error('Cannot have more than 99 instructions')
 
   const inputPattern = /^([A-Z]+)$/
   const [match, instructions] = inputPattern.exec(input) ?? []
-  if (!match) throw new Error('Invalid input structure')
+  if (!match) throw new Error('Instructions must be a sequence of F, L, or R')
   const listInstructions = instructions.split('')
   validateInstructions(listInstructions)
   return listInstructions
@@ -88,7 +90,7 @@ function createSequences(sequencesInputs: string[]): Sequence[] {
   const sequences = []
   for (let i = 0; i < sequencesInputs.length; i += 2) {
     sequences.push({
-      startPosition: createStartPositionNew(sequencesInputs[i]),
+      startPosition: createStartPosition(sequencesInputs[i]),
       instructions: createInstructionsNew(sequencesInputs[i + 1]),
     })
   }
@@ -99,7 +101,7 @@ export function parseInput(input: string): Input {
   const inputs = input.split('\n')
   const length = inputs.length
   if (length < 3 || (length - 1) % 2 !== 0) {
-    throw new Error('Invalid input structure')
+    throw new Error('Invalid input lines length')
   }
 
   const [boardInput, ...sequencesInputs] = inputs

@@ -1,22 +1,19 @@
 import { main } from '.'
 
-describe('Input is of the correct format', () => {
-  test.each(['', '5\n5', '5\n5\n1', '5 5\n1 1 Z\nR', '5 5\n1 1 E\nZ'])(
-    'Invalid input: %s',
-    (input) => {
-      expect(() => {
-        main(input)
-      }).toThrow('Invalid input structure')
-    }
-  )
-  test('Input is of the valid length', () => {
+describe('Wrong input format is properly flagged', () => {
+  test.each([
+    ['', 'Invalid input lines length'],
+    ['5\n5\n5\n5', 'Invalid input lines length'],
+    ['5\n5\n1', 'Top right board coordinate must be a pair of numbers'],
+    ['5 5\n1\nR', 'Invalid start position input stucture'],
+    ['5 5\n1 1 Z\nR', 'Orientation must be one of N, E, S, or W'],
+    ['5 5\n1 1 E\n666', 'Instructions must be a sequence of F, L, or R'],
+    ['5 5\n1 1 E\nABCDEG', 'Instructions must be a sequence of F, L, or R'],
+    ['5 5\n1 1 E\n' + 'F'.repeat(100), 'Cannot have more than 99 instructions'],
+  ])('Invalid input: %s -> %s', (input, error) => {
     expect(() => {
-      main('5 5\n1 1 E\n' + 'F'.repeat(999))
-    }).toThrow()
-
-    expect(() => {
-      main('5 5\n1 1 E\n' + 'F'.repeat(99))
-    }).not.toThrow()
+      main(input)
+    }).toThrow(error)
   })
 })
 
@@ -33,12 +30,12 @@ describe('Board coordinates', () => {
     {
       testName: 'Max X coordinate value must be 50',
       input: `99 3\n1 1 E\nR`,
-      error: /Error.*board X coordinate.*99.*max value.*50/,
+      error: /X.*99.*max value.*50/,
     },
     {
       testName: 'Max Y coordinate value must be 50',
       input: `5 99\n1 1 E\nR`,
-      error: /Error.*board Y coordinate.*99.*max value.*50/,
+      error: /Y.*99.*max value.*50/,
     },
   ])('$testName', ({ input, error }) => {
     expect(() => {
@@ -53,7 +50,7 @@ describe('Start rover position', () => {
 
     expect(() => {
       main(input)
-    }).toThrow()
+    }).toThrow(/X.*99.*max value.*50/)
   })
 })
 
