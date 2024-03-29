@@ -107,5 +107,8 @@ describe('Rover moves', () => {
     expect(main(input)).toEqual('3 3 N LOST')
   })
 
-  // TODO rover goes to -0!
+  test('Rover can fall off the board to the left', () => {
+    const input = `5 5\n0 0 W\nF`
+    expect(main(input)).toEqual('0 0 W LOST')
+  })
 })

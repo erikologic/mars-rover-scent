@@ -136,6 +136,9 @@ const moveRover = (
     if (newPos.x > topRightCoordinate.x || newPos.y > topRightCoordinate.y) {
       return { ...oldPos, lost: true }
     }
+    if (newPos.x < 0 || newPos.y < 0) {
+      return { ...oldPos, lost: true }
+    }
     oldPos = newPos
   }
   return oldPos
