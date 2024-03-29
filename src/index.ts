@@ -72,9 +72,24 @@ function parseInput(input: string): Input {
   if (!match || instructions.length > 100) {
     throw new Error('Invalid input structure')
   }
+
   validateRoverOrientation(startOrientation)
+
   const listInstructions = instructions.split('')
   validateInstructions(listInstructions)
+
+  const topRightBoardCoordinate = {
+    x: Number(boardX),
+    y: Number(boardY),
+  }
+  validateCoordinate(topRightBoardCoordinate)
+
+  const startPosition = {
+    x: Number(startX),
+    y: Number(startY),
+    orientation: startOrientation,
+  }
+  validateCoordinate(startPosition)
   return {
     topRightBoardCoordinate: { x: Number(boardX), y: Number(boardY) },
     startPosition: {
@@ -163,8 +178,6 @@ function stringifyPosition({ x, y, orientation, lost }: RoverPosition): string {
 export function main(input: string): string {
   const { topRightBoardCoordinate, startPosition, instructions } =
     parseInput(input)
-  validateCoordinate(topRightBoardCoordinate)
-  validateCoordinate(startPosition)
   const lastPosition = moveRover(
     startPosition,
     topRightBoardCoordinate,
