@@ -51,3 +51,11 @@ LLFFFLFLFL
 3 3 N LOST
 2 3 S
 ```
+
+# SOLUTION
+
+Run the tests
+
+```shell
+npm run test
+```

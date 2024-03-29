@@ -139,3 +139,18 @@ FFFLF`
 3 2 N`
   expect(main(input)).toEqual(expected)
 })
+
+test('README example', () => {
+  const input = `5 3
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL`
+
+  const expected = `1 1 E
+3 3 N LOST
+2 3 S`
+  expect(main(input)).toEqual(expected)
+})
