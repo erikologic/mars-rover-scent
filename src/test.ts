@@ -64,4 +64,26 @@ describe('Rover moves', () => {
     const input = `5 5\n1 1 N\nF`
     expect(main(input)).toEqual('1 2 N')
   })
+
+  test.each([
+    {
+      from: '1 1 E',
+      to: '2 1 E',
+    },
+    {
+      from: '1 1 N',
+      to: '1 2 N',
+    },
+    // {
+    //   from: '1 1 S',
+    //   to: '1 0 S',
+    // },
+    // {
+    //   from: '1 1 W',
+    //   to: '0 1 W',
+    // },
+  ])('move forward once: $from -> $to', ({ from, to }) => {
+    const input = `5 5\n${from}\nF`
+    expect(main(input)).toEqual(to)
+  })
 })
