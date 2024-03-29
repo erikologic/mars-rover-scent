@@ -9,45 +9,30 @@ describe('Board coordinates', () => {
     }).not.toThrow()
   })
 
-  test('Min X coordinate value must be 0', () => {
-    const input = `-1 3\n1 1 E\nR`
-
+  test.each([
+    {
+      testName: 'Min X coordinate value must be 0',
+      input: `-1 3\n1 1 E\nR`,
+      error: /Error.*board 1st coordinate.*-1.*min value.*0/,
+    },
+    {
+      testName: 'Max X coordinate value must be 50',
+      input: `99 3\n1 1 E\nR`,
+      error: /Error.*board 1st coordinate.*99.*max value.*50/,
+    },
+    {
+      testName: 'Min Y coordinate value must be 0',
+      input: `5 -1\n1 1 E\nR`,
+      error: /Error.*board 2nd coordinate.*-1.*min value.*0/,
+    },
+    {
+      testName: 'Max Y coordinate value must be 50',
+      input: `5 500\n1 1 E\nR`,
+      error: /Error.*board 2nd coordinate.*500.*max value.*50/,
+    },
+  ])('$testName', ({ input, error }) => {
     expect(() => {
       main(input)
-    }).toThrow(
-      'Error while parsing the board 1st coordinate: value is -1 but the min value can only be 0'
-    )
-  })
-
-  test('Max X coordinate value must be 50', () => {
-    const input = `99 3
-1 1 E
-R`
-
-    expect(() => {
-      main(input)
-    }).toThrow(
-      'Error while parsing the board 1st coordinate: value is 99 but the max value can only be 50'
-    )
-  })
-
-  test('Min Y coordinate value must be 0', () => {
-    const input = `5 -1\n1 1 E\nR`
-
-    expect(() => {
-      main(input)
-    }).toThrow(
-      'Error while parsing the board 2nd coordinate: value is -1 but the min value can only be 0'
-    )
-  })
-
-  test('Max Y coordinate value must be 50', () => {
-    const input = `5 500\n1 1 E\nR`
-
-    expect(() => {
-      main(input)
-    }).toThrow(
-      `Error while parsing the board 2nd coordinate: value is 500 but the max value can only be 50`
-    )
+    }).toThrow(error)
   })
 })
