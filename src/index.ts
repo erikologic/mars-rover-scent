@@ -90,11 +90,37 @@ function parseInput(input: string): Input {
   }
 }
 
+type TurnLookup = Record<
+  RoverPosition['orientation'],
+  RoverPosition['orientation']
+>
+const turnLeftLookup: TurnLookup = {
+  E: 'N',
+  N: 'W',
+  S: 'E',
+  W: 'S',
+}
+
+const turnRightLookup: TurnLookup = {
+  E: 'S',
+  N: 'E',
+  S: 'W',
+  W: 'N',
+}
+
+const turn =
+  (lookup: TurnLookup) =>
+  ({ x, y, orientation }: RoverPosition): RoverPosition => ({
+    x,
+    y,
+    orientation: lookup[orientation],
+  })
+
 type InstructionCommand = (position: RoverPosition) => RoverPosition
 const instruction2command: Record<Instruction, InstructionCommand> = {
   F: moveForward,
-  L: turnLeft,
-  R: turnRight,
+  L: turn(turnLeftLookup),
+  R: turn(turnRightLookup),
 }
 
 const moveRover = (
@@ -105,33 +131,6 @@ const moveRover = (
     (position, instruction) => instruction2command[instruction](position),
     startPosition
   )
-
-const turnLeftLookup: Record<
-  RoverPosition['orientation'],
-  RoverPosition['orientation']
-> = {
-  E: 'N',
-  N: 'W',
-  S: 'E',
-  W: 'S',
-}
-
-function turnLeft({ x, y, orientation }: RoverPosition): RoverPosition {
-  return { x, y, orientation: turnLeftLookup[orientation] }
-}
-
-const turnRightLookup: Record<
-  RoverPosition['orientation'],
-  RoverPosition['orientation']
-> = {
-  E: 'S',
-  N: 'E',
-  S: 'W',
-  W: 'N',
-}
-function turnRight({ x, y, orientation }: RoverPosition): RoverPosition {
-  return { x, y, orientation: turnRightLookup[orientation] }
-}
 
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
   switch (orientation) {
