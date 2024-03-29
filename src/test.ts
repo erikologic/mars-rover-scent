@@ -33,4 +33,10 @@ describe('Input is of the correct format', () => {
       main(input)
     }).toThrow('Invalid input structure')
   })
+  test('Input is of the valid length', () => {
+    const input = '5 5\n1 1 E\n' + 'F'.repeat(999)
+    expect(() => {
+      main(input)
+    }).toThrow()
+  })
 })
