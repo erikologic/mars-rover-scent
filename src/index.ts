@@ -59,11 +59,6 @@ function validateInstructions(
 }
 
 function parseInput(input: string): Input {
-  // TODO wrong
-  if (input.length > 100) {
-    throw new Error('Invalid input length')
-  }
-
   const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) ([A-Z])\n([A-Z]+)$/
   const [
     match,
@@ -74,7 +69,7 @@ function parseInput(input: string): Input {
     startOrientation,
     instructions,
   ] = inputPattern.exec(input) ?? []
-  if (!match) {
+  if (!match || instructions.length > 100) {
     throw new Error('Invalid input structure')
   }
   validateRoverOrientation(startOrientation)

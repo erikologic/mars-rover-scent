@@ -10,10 +10,13 @@ describe('Input is of the correct format', () => {
     }
   )
   test('Input is of the valid length', () => {
-    const input = '5 5\n1 1 E\n' + 'F'.repeat(999)
     expect(() => {
-      main(input)
+      main('5 5\n1 1 E\n' + 'F'.repeat(999))
     }).toThrow()
+
+    expect(() => {
+      main('5 5\n1 1 E\n' + 'F'.repeat(99))
+    }).not.toThrow()
   })
 })
 
