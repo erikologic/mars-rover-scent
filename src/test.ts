@@ -76,4 +76,9 @@ describe('Rover moves', () => {
     const input = `5 5\n${from}\nF`
     expect(main(input)).toEqual(to)
   })
+
+  test('Move forward 10 times', () => {
+    const input = `30 30\n1 1 E\n${'F'.repeat(10)}`
+    expect(main(input)).toEqual('11 1 E')
+  })
 })

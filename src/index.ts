@@ -63,7 +63,7 @@ function parseInput(input: string): Input {
     throw new Error('Invalid input length')
   }
 
-  const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) ([A-Z])\n([A-Z])+$/
+  const inputPattern = /^(\d+) (\d+)\n(\d+) (\d+) ([A-Z])\n([A-Z]+)$/
   const [
     match,
     boardX,
