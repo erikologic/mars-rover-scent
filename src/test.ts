@@ -11,19 +11,9 @@ describe('Board coordinates', () => {
 
   test.each([
     {
-      testName: 'Min X coordinate value must be 0',
-      input: `-1 3\n1 1 E\nR`,
-      error: /Error.*board X coordinate.*-1.*min value.*0/,
-    },
-    {
       testName: 'Max X coordinate value must be 50',
       input: `99 3\n1 1 E\nR`,
       error: /Error.*board X coordinate.*99.*max value.*50/,
-    },
-    {
-      testName: 'Min Y coordinate value must be 0',
-      input: `5 -5\n1 1 E\nR`,
-      error: /Error.*board Y coordinate.*-5.*min value.*0/,
     },
     {
       testName: 'Max Y coordinate value must be 50',

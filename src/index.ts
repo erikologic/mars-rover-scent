@@ -1,8 +1,3 @@
-function breaksLimit(n: number): undefined | ['min' | 'max', number] {
-  if (n < 0) return ['min', 0]
-  if (n > 50) return ['max', 50]
-}
-
 interface Coordinate {
   x: number
   y: number
@@ -14,11 +9,11 @@ function validateCoordinateNumber(
 ): void {
   const axis = key.toUpperCase()
   const value = coordinate[key]
-  const limitBroken = breaksLimit(value)
-  if (limitBroken !== undefined) {
-    const [limit, threshold] = limitBroken
+  const threshold = 50
+  const limitBroken = value > threshold
+  if (limitBroken) {
     throw new Error(
-      `Error while parsing the board ${axis} coordinate: value is ${value} but the ${limit} value can only be ${threshold}`
+      `Error while parsing the board ${axis} coordinate: value is ${value} but the max value can only be ${threshold}`
     )
   }
 }
