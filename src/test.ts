@@ -1,6 +1,14 @@
 import { main } from '.'
 
 describe('Board coordinates', () => {
+  test('Board coordinates must be a pair of valid numbers', () => {
+    const input = `5 5\n1 1 E\nR`
+
+    expect(() => {
+      main(input)
+    }).not.toThrow()
+  })
+
   test('Min X coordinate value must be 0', () => {
     const input = `-1 3\n1 1 E\nR`
 
