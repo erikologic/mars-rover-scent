@@ -94,30 +94,25 @@ function moveRover(
   startPosition: RoverPosition,
   instructions: Array<'L' | 'F' | 'R'>
 ): RoverPosition {
-  const lastPosition = { ...startPosition }
+  let lastPosition = { ...startPosition }
   for (const instruction of instructions) {
     if (instruction === 'F') {
-      moveForward(lastPosition)
+      lastPosition = moveForward(lastPosition)
     }
   }
   return lastPosition
 }
 
-function moveForward(lastPosition: RoverPosition) {
-  if (lastPosition.orientation === 'E') {
-    lastPosition.x += 1
-  }
-
-  if (lastPosition.orientation === 'N') {
-    lastPosition.y += 1
-  }
-
-  if (lastPosition.orientation === 'S') {
-    lastPosition.y -= 1
-  }
-
-  if (lastPosition.orientation === 'W') {
-    lastPosition.x -= 1
+function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
+  switch (orientation) {
+    case 'E':
+      return { x: x + 1, y, orientation }
+    case 'N':
+      return { x, y: y + 1, orientation }
+    case 'S':
+      return { x, y: y - 1, orientation }
+    case 'W':
+      return { x: x - 1, y, orientation }
   }
 }
 
