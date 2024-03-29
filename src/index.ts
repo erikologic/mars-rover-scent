@@ -115,5 +115,8 @@ export function main(input: string): string {
     }
   }
 
-  return `${startPosition.x} ${startPosition.y} ${startPosition.orientation}`
+  return stringifyPosition(startPosition)
+}
+function stringifyPosition({ x, y, orientation }: RoverPosition): string {
+  return `${x} ${y} ${orientation}`
 }
