@@ -55,21 +55,6 @@ function validateRoverOrientation(
   }
 }
 
-function createStartPosition(
-  startX: string,
-  startY: string,
-  startOrientation: string
-): RoverPosition {
-  validateRoverOrientation(startOrientation)
-  const startPosition = {
-    x: Number(startX),
-    y: Number(startY),
-    orientation: startOrientation,
-  }
-  validateCoordinate(startPosition)
-  return startPosition
-}
-
 function createTopRightBoardCoordinate(input: string): Coordinate {
   const inputPattern = /^(\d+) (\d+)$/
   const [match, boardX, boardY] = inputPattern.exec(input) ?? []
@@ -81,6 +66,22 @@ function createTopRightBoardCoordinate(input: string): Coordinate {
   validateCoordinate(topRightBoardCoordinate)
   return topRightBoardCoordinate
 }
+
+function createStartPositionNew(input: string): RoverPosition {
+  const inputPattern = /^(\d+) (\d+) ([A-Z])$/
+  const [match, startX, startY, startOrientation] =
+    inputPattern.exec(input) ?? []
+  if (!match) throw new Error('Invalid input structure')
+  validateRoverOrientation(startOrientation)
+  const startPosition = {
+    x: Number(startX),
+    y: Number(startY),
+    orientation: startOrientation,
+  }
+  validateCoordinate(startPosition)
+  return startPosition
+}
+
 export function parseInput(input: string): Input {
   const inputs = input.split('\n')
   const length = inputs.length
@@ -102,7 +103,7 @@ export function parseInput(input: string): Input {
 
   return {
     topRightBoardCoordinate: createTopRightBoardCoordinate(inputs[0]),
-    startPosition: createStartPosition(startX, startY, startOrientation),
+    startPosition: createStartPositionNew(inputs[1]),
     instructions: createInstructions(instructions),
   }
 }
