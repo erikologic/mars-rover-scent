@@ -90,8 +90,18 @@ function parseInput(input: string): Input {
   }
 }
 
-export function main(input: string): void {
+export function main(input: string): string {
   const { board, startPosition, instructions } = parseInput(input)
   validateCoordinate(board)
   validateCoordinate(startPosition)
+
+  for (const instruction of instructions) {
+    if (instruction === 'F') {
+      if (startPosition.orientation === 'E') {
+        startPosition.x += 1
+      }
+    }
+  }
+
+  return `${startPosition.x} ${startPosition.y} ${startPosition.orientation}`
 }

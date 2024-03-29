@@ -53,3 +53,10 @@ describe('Start rover position', () => {
     }).toThrow()
   })
 })
+
+describe('Rover moves', () => {
+  test('move forward', () => {
+    const input = `5 5\n1 1 E\nF`
+    expect(main(input)).toEqual('2 1 E')
+  })
+})
