@@ -23,5 +23,15 @@ R`
     }).toThrow(
       'Error while parsing the board 2nd coordinate: value is 500 but the max value can only be 50'
     )
+
+    const input2 = `5 900
+1 1 E
+R`
+
+    expect(() => {
+      main(input2)
+    }).toThrow(
+      'Error while parsing the board 2nd coordinate: value is 900 but the max value can only be 50'
+    )
   })
 })
