@@ -104,6 +104,14 @@ export function main(input: string): string {
       if (startPosition.orientation === 'N') {
         startPosition.y += 1
       }
+
+      if (startPosition.orientation === 'S') {
+        startPosition.y -= 1
+      }
+
+      if (startPosition.orientation === 'W') {
+        startPosition.x -= 1
+      }
     }
   }
 

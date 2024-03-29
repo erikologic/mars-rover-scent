@@ -55,16 +55,6 @@ describe('Start rover position', () => {
 })
 
 describe('Rover moves', () => {
-  test('move forward', () => {
-    const input = `5 5\n1 1 E\nF`
-    expect(main(input)).toEqual('2 1 E')
-  })
-
-  test('move forward north', () => {
-    const input = `5 5\n1 1 N\nF`
-    expect(main(input)).toEqual('1 2 N')
-  })
-
   test.each([
     {
       from: '1 1 E',
@@ -74,14 +64,14 @@ describe('Rover moves', () => {
       from: '1 1 N',
       to: '1 2 N',
     },
-    // {
-    //   from: '1 1 S',
-    //   to: '1 0 S',
-    // },
-    // {
-    //   from: '1 1 W',
-    //   to: '0 1 W',
-    // },
+    {
+      from: '1 1 S',
+      to: '1 0 S',
+    },
+    {
+      from: '1 1 W',
+      to: '0 1 W',
+    },
   ])('move forward once: $from -> $to', ({ from, to }) => {
     const input = `5 5\n${from}\nF`
     expect(main(input)).toEqual(to)
