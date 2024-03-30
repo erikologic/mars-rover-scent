@@ -66,19 +66,23 @@ export const getMoveRover = (
     let newPos: RoverPosition
     for (const instruction of instructions) {
       newPos = instruction2command[instruction](oldPos)
-      const hashedPosAndInstructions = JSON.stringify({
-        ...oldPos,
-        instruction,
-      })
 
-      if (lostRoversPosAndInstructions.has(hashedPosAndInstructions)) {
-        continue
+      if (instruction === 'F') {
+        const hashedPosAndInstructions = JSON.stringify({
+          ...oldPos,
+          instruction,
+        })
+
+        if (lostRoversPosAndInstructions.has(hashedPosAndInstructions)) {
+          continue
+        }
+
+        if (isOffBoard(newPos, topRightCoordinate)) {
+          lostRoversPosAndInstructions.add(hashedPosAndInstructions)
+          return { ...oldPos, lost: true }
+        }
       }
 
-      if (isOffBoard(newPos, topRightCoordinate)) {
-        lostRoversPosAndInstructions.add(hashedPosAndInstructions)
-        return { ...oldPos, lost: true }
-      }
       oldPos = newPos
     }
     return oldPos
