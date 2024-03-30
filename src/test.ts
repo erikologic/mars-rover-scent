@@ -7,9 +7,9 @@ describe('Validate input', () => {
       ['5\n5\n5\n5', 'Invalid input lines length'],
       ['5\n5\n1', 'Top right board coordinate must be a pair of numbers'],
       ['5 5\n1\nR', 'Invalid start position input stucture'],
-      ['5 5\n1 1 Z\nR', 'Orientation must be one of N, E, S, or W'],
-      ['5 5\n1 1 E\n666', 'Instructions must be a sequence of F, L, or R'],
-      ['5 5\n1 1 E\nABCDEG', 'Instructions must be a sequence of F, L, or R'],
+      ['5 5\n1 1 Z\nR', 'Orientation must be one of N, S, E, W'],
+      ['5 5\n1 1 E\n666', 'Instructions must be a sequence of L, F, R'],
+      ['5 5\n1 1 E\nABCDEG', 'Instructions must be a sequence of L, F, R'],
       [
         '5 5\n1 1 E\n' + 'F'.repeat(100),
         'Cannot have more than 99 instructions',

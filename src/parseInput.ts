@@ -8,17 +8,19 @@ import {
   type Sequence,
 } from './type'
 
+const coordinateThreshold = 50
+const instructionThreshold = 99
+
 function validateCoordinateNumber(
   key: keyof Coordinate,
   coordinate: Coordinate
 ): void {
-  const axis = key.toUpperCase()
   const value = coordinate[key]
-  const threshold = 50
-  const limitBroken = value > threshold
+  const limitBroken = value > coordinateThreshold
   if (limitBroken) {
+    const axis = key.toUpperCase()
     throw new Error(
-      `${axis} coordinate is ${value} but the max value is ${threshold}`
+      `${axis} coordinate is ${value} but the max value is ${coordinateThreshold}`
     )
   }
 }
@@ -33,17 +35,24 @@ function validateInstructions(
   instructions: string[]
 ): asserts instructions is Instruction[] {
   if (!instructionRegex.test(instructions.join(''))) {
-    throw new Error('Instructions must be a sequence of F, L, or R')
+    throw new Error(
+      `Instructions must be a sequence of ${validInstructions.join(', ')}`
+    )
   }
 }
 
 function createInstructionsNew(input: string): Instruction[] {
-  if (input.length > 99)
-    throw new Error('Cannot have more than 99 instructions')
+  if (input.length > instructionThreshold)
+    throw new Error(
+      `Cannot have more than ${instructionThreshold} instructions`
+    )
 
   const inputPattern = /^([A-Z]+)$/
   const [match, instructionString] = inputPattern.exec(input) ?? []
-  if (!match) throw new Error('Instructions must be a sequence of F, L, or R')
+  if (!match)
+    throw new Error(
+      `Instructions must be a sequence of ${validInstructions.join(', ')}`
+    )
   const instructions = instructionString.split('')
   validateInstructions(instructions)
   return instructions
@@ -54,7 +63,9 @@ function validateRoverOrientation(
   orientation: string
 ): asserts orientation is RoverPosition['orientation'] {
   if (!orientationRegex.test(orientation)) {
-    throw new Error('Orientation must be one of N, E, S, or W')
+    throw new Error(
+      `Orientation must be one of ${validOrientations.join(', ')}`
+    )
   }
 }
 
