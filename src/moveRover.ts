@@ -56,10 +56,15 @@ const isOffBoard = (
   { x: maxX, y: maxY }: Coordinate
 ): boolean => x < 0 || y < 0 || x > maxX || y > maxY
 
+const hashRoverScent = (
+  { x, y, orientation }: RoverPosition,
+  instruction: Instruction
+): string => `${x}-${y}-${orientation}-${instruction}`
+
 export const getMoveRover = (
   topRightCoordinate: Coordinate
 ): ((s: Sequence) => RoverPosition) => {
-  const lostRoversPosAndInstructions = new Set<string>()
+  const lostRoversScents = new Set<string>()
 
   return ({ startPosition, instructions }: Sequence): RoverPosition => {
     let oldPos = { ...startPosition }
@@ -68,17 +73,14 @@ export const getMoveRover = (
       newPos = instruction2command[instruction](oldPos)
 
       if (instruction === 'F') {
-        const hashedPosAndInstructions = JSON.stringify({
-          ...oldPos,
-          instruction,
-        })
+        const roverScent = hashRoverScent(oldPos, instruction)
 
-        if (lostRoversPosAndInstructions.has(hashedPosAndInstructions)) {
+        if (lostRoversScents.has(roverScent)) {
           continue
         }
 
         if (isOffBoard(newPos, topRightCoordinate)) {
-          lostRoversPosAndInstructions.add(hashedPosAndInstructions)
+          lostRoversScents.add(roverScent)
           return { ...oldPos, lost: true }
         }
       }
