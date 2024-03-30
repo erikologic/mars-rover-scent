@@ -31,13 +31,6 @@ const turn =
     orientation: lookup[orientation],
   })
 
-type InstructionCommand = (position: RoverPosition) => RoverPosition
-const instruction2command: Record<Instruction, InstructionCommand> = {
-  F: moveForward,
-  L: turn(turnLeftLookup),
-  R: turn(turnRightLookup),
-}
-
 function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
   switch (orientation) {
     case 'E':
@@ -49,6 +42,13 @@ function moveForward({ x, y, orientation }: RoverPosition): RoverPosition {
     case 'W':
       return { x: x - 1, y, orientation }
   }
+}
+
+type InstructionCommand = (position: RoverPosition) => RoverPosition
+const instruction2command: Record<Instruction, InstructionCommand> = {
+  F: moveForward,
+  L: turn(turnLeftLookup),
+  R: turn(turnRightLookup),
 }
 
 const isOffBoard = (

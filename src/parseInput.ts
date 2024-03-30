@@ -28,17 +28,25 @@ function validateCoordinate(coordinate: Coordinate): void {
   validateCoordinateNumber('y', coordinate)
 }
 
-function createTopRightBoardCoordinate(input: string): Coordinate {
-  const inputPattern = /^(\d+) (\d+)$/
-  const [match, boardX, boardY] = inputPattern.exec(input) ?? []
-  if (!match)
-    throw new Error('Top right board coordinate must be a pair of numbers')
-  const topRightBoardCoordinate = {
-    x: Number(boardX),
-    y: Number(boardY),
+const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
+function validateInstructions(
+  instructions: string[]
+): asserts instructions is Instruction[] {
+  if (!instructionRegex.test(instructions.join(''))) {
+    throw new Error('Instructions must be a sequence of F, L, or R')
   }
-  validateCoordinate(topRightBoardCoordinate)
-  return topRightBoardCoordinate
+}
+
+function createInstructionsNew(input: string): Instruction[] {
+  if (input.length > 99)
+    throw new Error('Cannot have more than 99 instructions')
+
+  const inputPattern = /^([A-Z]+)$/
+  const [match, instructionString] = inputPattern.exec(input) ?? []
+  if (!match) throw new Error('Instructions must be a sequence of F, L, or R')
+  const instructions = instructionString.split('')
+  validateInstructions(instructions)
+  return instructions
 }
 
 const orientationRegex = new RegExp(`^(${validOrientations.join('|')})$`)
@@ -65,27 +73,6 @@ function createStartPosition(input: string): RoverPosition {
   return startPosition
 }
 
-const instructionRegex = new RegExp(`^(${validInstructions.join('|')})+$`)
-function validateInstructions(
-  instructions: string[]
-): asserts instructions is Instruction[] {
-  if (!instructionRegex.test(instructions.join(''))) {
-    throw new Error('Instructions must be a sequence of F, L, or R')
-  }
-}
-
-function createInstructionsNew(input: string): Instruction[] {
-  if (input.length > 99)
-    throw new Error('Cannot have more than 99 instructions')
-
-  const inputPattern = /^([A-Z]+)$/
-  const [match, instructions] = inputPattern.exec(input) ?? []
-  if (!match) throw new Error('Instructions must be a sequence of F, L, or R')
-  const listInstructions = instructions.split('')
-  validateInstructions(listInstructions)
-  return listInstructions
-}
-
 function createSequences(sequencesInputs: string[]): Sequence[] {
   const sequences = []
   for (let i = 0; i < sequencesInputs.length; i += 2) {
@@ -95,6 +82,19 @@ function createSequences(sequencesInputs: string[]): Sequence[] {
     })
   }
   return sequences
+}
+
+function createTopRightBoardCoordinate(input: string): Coordinate {
+  const inputPattern = /^(\d+) (\d+)$/
+  const [match, boardX, boardY] = inputPattern.exec(input) ?? []
+  if (!match)
+    throw new Error('Top right board coordinate must be a pair of numbers')
+  const topRightBoardCoordinate = {
+    x: Number(boardX),
+    y: Number(boardY),
+  }
+  validateCoordinate(topRightBoardCoordinate)
+  return topRightBoardCoordinate
 }
 
 export function parseInput(input: string): Input {
