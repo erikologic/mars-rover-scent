@@ -1,4 +1,4 @@
-import { main } from '.'
+import { main } from './marsRover'
 
 describe('Validate input', () => {
   describe('Wrong input format is properly flagged', () => {
